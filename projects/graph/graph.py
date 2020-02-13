@@ -88,14 +88,20 @@ class Graph:
                 for edge in edges:
                     stack.push(edge)
 
-    def dft_recursive(self, starting_vertex):
+    def dft_recursive(self, starting_vertex, visited=set()):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
 
         This should be done using recursion.
         """
-        pass  # TODO
+        # visited = set()
+        if starting_vertex not in visited:
+            print(starting_vertex)
+            visited.add(starting_vertex)
+            edges = self.get_neighbors(starting_vertex)
+            for edge in edges:
+                self.dft_recursive(edge, visited)
 
     def bfs(self, starting_vertex, destination_vertex):
         """
@@ -104,15 +110,25 @@ class Graph:
         breath-first order.
         """
         # make a Queue
+        queue = Queue()
         # make a set for visited
+        visited = set()
         # enqueue A PATH TO the starting_vertex
+        queue.enqueue(starting_vertex)
         # while the queue isn't empty:
-        # dequeue the next path
+        while queue.size() > 0:
+            # dequeue the next path
+            current_node = queue.dequeue()
         # current_node is the last thinkg in the path
         # check if it's the target, aka the destination_vertex
-        # if so, return the path
-        # if not, mark this as visited
-        # get the neighbors
+        if current_node == destination_vertex:
+            # if so, return the path
+            return visited
+        else:
+            # if not, mark this as visited
+            visited.add(current_node)
+            # get the neighbors
+            edges = self.get_neighbors(current_node)
         # copy the path, add the neighbor to the copy
         # for each one, add a PATH TO IT to our queue
 
@@ -186,6 +202,7 @@ if __name__ == '__main__':
         1, 2, 4, 6, 3, 5, 7
     '''
     graph.dft(1)
+    print('---dft_recursive------------------')
     graph.dft_recursive(1)
 
     '''
