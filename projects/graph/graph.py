@@ -114,23 +114,29 @@ class Graph:
         # make a set for visited
         visited = set()
         # enqueue A PATH TO the starting_vertex
-        queue.enqueue(starting_vertex)
+        queue.enqueue([starting_vertex])
         # while the queue isn't empty:
         while queue.size() > 0:
             # dequeue the next path
-            current_node = queue.dequeue()
+            current_path = queue.dequeue()
+            current_node = current_path[-1]
         # current_node is the last thinkg in the path
         # check if it's the target, aka the destination_vertex
-        if current_node == destination_vertex:
-            # if so, return the path
-            return visited
-        else:
-            # if not, mark this as visited
-            visited.add(current_node)
-            # get the neighbors
-            edges = self.get_neighbors(current_node)
-        # copy the path, add the neighbor to the copy
-        # for each one, add a PATH TO IT to our queue
+            if current_node == destination_vertex:
+                # if so, return the path
+                return current_path
+            else:
+                # if not, mark this as visited
+                if current_node not in visited:
+                    visited.add(current_node)
+                    # get the neighbors
+                    edges = self.get_neighbors(current_node)
+                    # copy the path, add the neighbor to the copy
+                    # for each one, add a PATH TO IT to our queue
+                    for edge in edges:
+                        path_copy = list(current_path)
+                        path_copy.append(edge)
+                        queue.enqueue(path_copy)
 
     def dfs(self, starting_vertex, destination_vertex):
         """
